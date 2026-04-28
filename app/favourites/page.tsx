@@ -7,8 +7,10 @@ import Link from "next/link";
 import { ArrowLeft, Heart } from "@phosphor-icons/react";
 import { useState } from "react";
 import { PokemonDetailSheet } from "@/components/own/PokemonDetailSheet";
+import { AuthGuard } from "@/components/own/AuthGuard";
+import { UserMenu } from "@/components/own/UserMenu";
 
-export default function FavouritesPage() {
+function FavouritesContent() {
   const { favourites } = useFavourite();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -24,7 +26,7 @@ export default function FavouritesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 text-sm font-medium hover:bg-primary/10 hover:text-primary"
+                  className="gap-1.5 text-sm font-medium hover:bg-primary/10 hover:text-primary cursor-pointer"
                 >
                   <ArrowLeft weight="bold" className="w-4 h-4" />
                   Back
@@ -42,8 +44,8 @@ export default function FavouritesPage() {
               )}
             </div>
 
-            {/* Spacer for centering */}
-            <div className="w-[72px]" />
+            {/* User menu */}
+            <UserMenu />
           </div>
         </div>
       </header>
@@ -64,7 +66,7 @@ export default function FavouritesPage() {
               to save it here.
             </p>
             <Link href="/" className="mt-6">
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="gap-2 cursor-pointer">
                 <ArrowLeft weight="bold" className="w-3.5 h-3.5" />
                 Explore Pokédex
               </Button>
@@ -97,5 +99,13 @@ export default function FavouritesPage() {
         pokemonName={selectedPokemon}
       />
     </div>
+  );
+}
+
+export default function FavouritesPage() {
+  return (
+    <AuthGuard>
+      <FavouritesContent />
+    </AuthGuard>
   );
 }
